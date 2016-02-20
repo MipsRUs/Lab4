@@ -76,9 +76,10 @@ result := 0;
 index := index + 4;
 end loop; -- end while
 ------------------------new loop-----------------------------
-if(ref_clk'event AND ref_clk='1') then
+loop
 	dataOut<= mem(to_integer(addr)) & mem(to_integer(addr) + 1) & mem(to_integer(addr) +2) & mem(to_integer(addr) + 3);
-end if;
+	wait addr;
+end loop;
 end process;
 end;
 
