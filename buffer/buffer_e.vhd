@@ -36,11 +36,11 @@ architecture behavior of buffer_e is
 
 begin
 	process(ref_clk, WE, DataI)
-	variable temp : std_logic_vector(0 DOWNTO 31);
+	variable temp : std_logic_vector(31 DOWNTO 0);
 	begin
 		if(ref_clk'event AND ref_clk='1') then 
 			if(WE='1') then
-				temp := std_logic_vector(DataI);
+				temp := std_logic_vector(unsigned(DataI);
 			end if;
 
 
