@@ -40,7 +40,7 @@ memory L1(
 always #1 ref_clk = ~ ref_clk;
 
 initial begin
-
+	ref_clk = 1;
 	WE = 0;
  	IorD = 0;
  	WD = 32'b00000000000000000000000000000000;
