@@ -20,6 +20,8 @@
 
 library ieee;
 use ieee.std_logic_1164.all;
+use STD.TEXTIO.all;
+use IEEE.NUMERIC_STD_UNSIGNED.all;
 use ieee.numeric_std.all;
 
 ENTITY memory IS 
