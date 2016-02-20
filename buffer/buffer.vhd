@@ -34,7 +34,7 @@ END buffer;
 architecture behavior of buffer is
 
 begin
-	process(ref_clk, WE, DataI)
+	process(ref_clk, DataI)
 	variable temp : std_logic_vector(31 DOWNTO 0);
 	begin
 		if(ref_clk'event AND ref_clk='1') then 
