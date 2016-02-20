@@ -26,17 +26,12 @@ use IEEE.NUMERIC_STD_UNSIGNED.all;
 
 entity rom is -- instruction memory
 	port(
-		ref_clk: IN STD_LOGIC;
 		addr: IN STD_LOGIC_VECTOR(31 downto 0); 
 		dataOut: OUT STD_LOGIC_VECTOR(31 DOWNTO 0)
 	);
 end rom;
 
 architecture behavior of rom is
-
-type ramtype is array (2**16 downto 0) of STD_LOGIC_VECTOR(7 downto 0);
-variable mem: ramtype;
-
 begin
 process is
 file mem_file: TEXT;
@@ -44,9 +39,9 @@ variable L: line;
 variable ch: character;
 variable i, index, result: integer;
 
+type ramtype is array (2**16 downto 0) of STD_LOGIC_VECTOR(7 downto 0);
 
-
-
+variable mem: ramtype;
 begin
 for i in 0 to 63 loop 
 mem(i) := (others => '0');
@@ -80,17 +75,13 @@ result := 0;
 index := index + 4;
 end loop; -- end while
 ------------------------new loop-----------------------------
+loop
+dataOut<= mem(to_integer(addr)) & mem(to_integer(addr) + 1) & mem(to_integer(addr) +2) & mem(to_integer(addr) + 3);
+wait on addr;
+end loop;
 end process;
-
-process(ref_clk, addr)
-begin
-	if(ref_clk'event and ref_clk='1') then
-		dataOut<= mem(to_integer(addr)) & mem(to_integer(addr) + 1) & mem(to_integer(addr) +2) & mem(to_integer(addr) + 3);
-	end if;
-end process;
-
-
 end;
+
 
 
 
