@@ -65,13 +65,32 @@ constant I_mem: I_memory := ("00100000","00000010","00000000","00000101",
 
 
 begin
-	process(ref_clk, addr)
+	process(ref_clk, WE, IorD, addr, WD)
+	variable D_mem_var: D_memory;
 	begin
 		if(ref_clk'event AND ref_clk='1') then 
-			RD<= I_mem(to_integer(addr(7 DOWNTO 0))) & 
-					I_mem(to_integer(addr(7 DOWNTO 0)) + 1) & 
-					I_mem(to_integer(addr(7 DOWNTO 0)) +2) & 
-					I_mem(to_integer(addr(7 DOWNTO 0)) + 3);
+			if(IorD='0') then
+				RD<= I_mem(to_integer(addr(7 DOWNTO 0))) & 
+						I_mem(to_integer(addr(7 DOWNTO 0)) + 1) & 
+						I_mem(to_integer(addr(7 DOWNTO 0)) +2) & 
+						I_mem(to_integer(addr(7 DOWNTO 0)) + 3);
+
+			else 	
+				if(WE='1') then
+					D_mem_var(to_integer(unsigned(addr))) := WD(31 downto 24);
+					D_mem_var(to_integer(unsigned(addr))+1) := WD(23 downto 16);
+					D_mem_var(to_integer(unsigned(addr))+2) := WD(15 downto 8);
+					D_mem_var(to_integer(unsigned(addr))+3) := WD(7 downto 0);
+
+				else
+					RD <= D_mem_var(to_integer(unsigned(addr))) &  D_mem_var(to_integer(unsigned(addr))+1)
+						& D_mem_var(to_integer(unsigned(addr))+2) & D_mem_var(to_integer(unsigned(addr))+3);
+				end if;
+			end if;
+
+
+
+
 		end if;
 	end process;
 end;
