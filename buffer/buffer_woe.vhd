@@ -22,16 +22,16 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-ENTITY buffer IS 
+ENTITY buffer_woe IS 
 	port (
 		ref_clk : IN std_logic;
 		DataI: IN std_logic_vector(31 DOWNTO 0);
 		DataO: OUT std_logic_vector(31 DOWNTO 0)
 	
 	);
-END buffer;
+END buffer_woe;
 
-architecture behavior of buffer is
+architecture behavior of buffer_woe is
 
 begin
 	process(ref_clk, DataI)
