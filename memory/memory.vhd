@@ -113,13 +113,13 @@ end process;
 memory_process: process (ref_clk, WE, IorD, addr, WD)
 
 	variable D_mem_var : D_memory;
-	variable mem: ramtype;
+	variable i_mem: ramtype;
 	
 
 		if(ref_clk'event AND ref_clk='1') then 
 			if(IorD='0') then
-				RD<= mem(to_integer(addr)) & mem(to_integer(addr) + 1) 
-						& mem(to_integer(addr) +2) & mem(to_integer(addr) + 3);
+				RD<= i_mem(to_integer(addr)) & i_mem(to_integer(addr) + 1) 
+						& i_mem(to_integer(addr) +2) & i_mem(to_integer(addr) + 3);
 			else 	
 				if(WE='1') then
 					D_mem_var(to_integer(unsigned(addr))) := WD(31 downto 24);
