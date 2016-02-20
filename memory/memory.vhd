@@ -49,7 +49,7 @@ begin
 
 
 
-process is
+READ_FILE: process
 file mem_file: TEXT;
 variable L: line;
 variable ch: character;
