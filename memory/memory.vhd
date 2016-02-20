@@ -109,7 +109,6 @@ end process;
 
 
 
-begin
 
 memory_process: process (ref_clk, WE, IorD, addr, WD)
 
