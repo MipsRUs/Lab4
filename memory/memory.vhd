@@ -116,7 +116,7 @@ memory_process: process (ref_clk, WE, IorD, addr, WD)
 	--variable i_mem: ramtype;
 	
 
-		if(ref_clk'event AND ref_clk='1') then 
+		--if(ref_clk'event AND ref_clk='1') then 
 
 			--if(IorD='0') then
 				--RD<= i_mem(to_integer(addr)) & i_mem(to_integer(addr) + 1) 
@@ -133,7 +133,7 @@ memory_process: process (ref_clk, WE, IorD, addr, WD)
 						& D_mem_var(to_integer(unsigned(addr))+2) & D_mem_var(to_integer(unsigned(addr))+3);
 				end if;
 			--end if;
-		end if;
+		--end if;
 
 	end process;
 end behavior;
