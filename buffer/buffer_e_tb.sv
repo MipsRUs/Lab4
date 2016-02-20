@@ -19,14 +19,14 @@
 //
 /***************************************************************/
 
-module memory_tb;
+module buffer_e_tb;
 
 	logic ref_clk;
 	logic WE;
 	logic[31:0] DataI;
 	logic[31:0] DataO;
   
-memory L1(
+buffer_e L1(
           .ref_clk(ref_clk)
          ,.WE(WE)
          ,.DataI(DataI)
