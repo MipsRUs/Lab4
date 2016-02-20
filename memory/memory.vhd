@@ -65,12 +65,14 @@ constant I_mem: I_memory := ("00100000","00000010","00000000","00000101",
 
 
 begin
-	if(ref_clk'event AND ref_clk='1') then 
-		RD<= I_mem(to_integer(addr(7 DOWNTO 0))) & 
-				I_mem(to_integer(addr(7 DOWNTO 0)) + 1) & 
-				I_mem(to_integer(addr(7 DOWNTO 0)) +2) & 
-				I_mem(to_integer(addr(7 DOWNTO 0)) + 3);
-	end if;
+	process(ref_clk, addr)
+		if(ref_clk'event AND ref_clk='1') then 
+			RD<= I_mem(to_integer(addr(7 DOWNTO 0))) & 
+					I_mem(to_integer(addr(7 DOWNTO 0)) + 1) & 
+					I_mem(to_integer(addr(7 DOWNTO 0)) +2) & 
+					I_mem(to_integer(addr(7 DOWNTO 0)) + 3);
+		end if;
+	end process;
 end;
 
 
