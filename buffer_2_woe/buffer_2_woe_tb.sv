@@ -30,7 +30,7 @@ module buffer_2_woe_tb;
 buffer_2_woe L1(
           .ref_clk(ref_clk)
          ,.DataI_A(DataI_A)
-         ,.DataI_(DataI_B)
+         ,.DataI_B(DataI_B)
          ,.DataO_A(DataO_A)
          ,.DataO_B(DataO_B)
          );
