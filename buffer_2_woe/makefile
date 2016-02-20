@@ -17,9 +17,9 @@
 
 
 # change these parameters 
-PROJECT = buffer_woe
-TB_TOP = buffer_woe_tb
-TB_TOP_OPT = buffer_woe_tb_opt
+PROJECT = buffer_2_woe
+TB_TOP = buffer_2_woe_tb
+TB_TOP_OPT = buffer_2_woe_tb_opt
 
 
 all: $(PROJECT)
