@@ -90,7 +90,7 @@ memory_process: process (ref_clk, WE, IorD, addr, WD)
 			index := index + 4;
 		end loop; -- end while
 
-		if(clk'event AND ref_clk='1') then 
+		if(ref_clk'event AND ref_clk='1') then 
 			if(IorD='0') then
 				RD<= I_mem_var(to_integer(addr)) & I_mem_var(to_integer(addr) + 1) 
 						& I_mem_var(to_integer(addr) +2) & I_mem_var(to_integer(addr) + 3);
