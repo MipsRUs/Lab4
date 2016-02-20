@@ -114,7 +114,7 @@ memory_process: process (ref_clk, WE, IorD, addr, WD)
 	
 
 	variable D_mem_var : D_memory;
-	variable ram: ramtype;
+	variable mem: ramtype;
 	begin	
 
 		if(ref_clk'event AND ref_clk='1') then 
