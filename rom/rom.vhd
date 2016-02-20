@@ -78,7 +78,7 @@ end loop; -- end while
 ------------------------new loop-----------------------------
 loop
 	dataOut<= mem(to_integer(addr)) & mem(to_integer(addr) + 1) & mem(to_integer(addr) +2) & mem(to_integer(addr) + 3);
-	wait addr;
+	wait on addr;
 end loop;
 end process;
 end;
