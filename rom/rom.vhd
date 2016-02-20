@@ -26,6 +26,7 @@ use IEEE.NUMERIC_STD_UNSIGNED.all;
 
 entity rom is -- instruction memory
 	port(
+		ref_clk: IN STD_LOGIC;
 		addr: IN STD_LOGIC_VECTOR(31 downto 0); 
 		dataOut: OUT STD_LOGIC_VECTOR(31 DOWNTO 0)
 	);
@@ -75,10 +76,9 @@ result := 0;
 index := index + 4;
 end loop; -- end while
 ------------------------new loop-----------------------------
-loop
-dataOut<= mem(to_integer(addr)) & mem(to_integer(addr) + 1) & mem(to_integer(addr) +2) & mem(to_integer(addr) + 3);
-wait on addr;
-end loop;
+if(ref_clk'event AND ref_clk='1') then
+	dataOut<= mem(to_integer(addr)) & mem(to_integer(addr) + 1) & mem(to_integer(addr) +2) & mem(to_integer(addr) + 3);
+end if;
 end process;
 end;
 
