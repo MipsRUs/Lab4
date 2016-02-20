@@ -41,10 +41,13 @@ END memory;
 
 architecture behavior of memory is
 
-begin
 subtype byte is std_logic_vector(7 DOWNTO 0);
 type D_memory is array (0 to (2**11)-1) of byte; --size: 8 x 2048
 type ramtype is array (2**16 downto 0) of STD_LOGIC_VECTOR(7 downto 0);
+
+begin
+
+
 
 process is
 file mem_file: TEXT;
