@@ -21,16 +21,16 @@
 
 
 module rom_tb;
-  logic ref_clk;
+
   logic[31:0] input1;
   wire[31:0] dataOut1;
   
   rom L1     (
-              .ref_clk(ref_clk),
+
               .addr(input1),
                  .dataOut(dataOut1));
 
-  always #1 ref_clk = ~ ref_clk;
+
 
   initial begin
   ref_clk = 1;
