@@ -66,6 +66,7 @@ constant I_mem: I_memory := ("00100000","00000010","00000000","00000101",
 
 begin
 	process(ref_clk, addr)
+	begin
 		if(ref_clk'event AND ref_clk='1') then 
 			RD<= I_mem(to_integer(addr(7 DOWNTO 0))) & 
 					I_mem(to_integer(addr(7 DOWNTO 0)) + 1) & 
