@@ -40,7 +40,7 @@ begin
 	begin
 		if(ref_clk'event AND ref_clk='1') then 
 			if(WE='1') then
-				temp := std_logic_vector(unsigned(DataI);
+				temp := std_logic_vector(unsigned(DataI));
 			end if;
 
 
