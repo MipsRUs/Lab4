@@ -38,7 +38,7 @@ always #1 ref_clk = ~ ref_clk;
 initial begin
 	ref_clk = 1;
 	WE = 1;
- 	IorD = 0;
+
  	#2 DataI = 32'b00000000000000000000011111111111;
  	#2 WE = 0;
  	#2 DataI = 32'b00000000000000000000000000000000;
