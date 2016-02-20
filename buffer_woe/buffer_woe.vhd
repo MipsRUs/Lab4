@@ -37,7 +37,9 @@ begin
 	process(ref_clk, DataI)
 	variable temp : std_logic_vector(31 DOWNTO 0);
 	begin
-		if(ref_clk'event AND ref_clk='1') then 
+
+		-- SC 2016-02-20: Changed ref_clk='1' to ref_clk='0'
+		if(ref_clk'event AND ref_clk='0') then 
 			temp := std_logic_vector(unsigned(DataI));
 		end if;
 		DataO <= temp;
