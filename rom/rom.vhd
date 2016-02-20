@@ -26,6 +26,7 @@ use IEEE.NUMERIC_STD_UNSIGNED.all;
 
 entity rom is -- instruction memory
 	port(
+		ref_clk: IN std_logic;
 		addr: IN STD_LOGIC_VECTOR(31 downto 0); 
 		dataOut: OUT STD_LOGIC_VECTOR(31 DOWNTO 0)
 	);
