@@ -186,8 +186,18 @@ component orgate
 	); 
 end component;
 
--- control
+-- shiftextend
+component shiftextend
+	port(
+		loadcontrol:	IN std_logic_vector(2 downto 0);
+		in32:		IN std_logic_vector (31 downto 0);
+		out32:		OUT std_logic_vector(31 downto 0)
+	);
+end component;
 
+
+
+-- control
 -- ************ missing some functionalities
 component control
 	PORT (
@@ -240,6 +250,10 @@ component control
 
 		-- '1' if branching, '0' if not branching
 		Branch: OUT std_logic;
+
+		-- "000" if LB; "001" if LH; "010" if LBU; "011" if LHU; 
+		-- "100" if normal, (don't do any manipulation to input) 
+		LoadControl: OUT std_logic_vector(2 DOWNTO 0);
 
 		-- func for ALU
 		ALUControl: OUT std_logic_vector(5 DOWNTO 0);
@@ -309,6 +323,8 @@ signal concatenation_out: std_logic_vector(31 DOWNTO 0);
 
 signal andgate_out: std_logic;
 
+signal shiftextend_out: std_logic_vector(31 DOWNTO 0);
+
 signal IorD: std_logic;
 signal MemWrite: std_logic;
 signal IRWrite: std_logic;
@@ -317,6 +333,7 @@ signal MemToReg: std_logic;
 signal RegWrite: std_logic;
 signal ALUSrcA: std_logic;
 signal ALUSrcB: std_logic_vector(1 DOWNTO 0);
+signal LoadControl: std_logic_vector(2 DOWNTO 0);
 signal ALUControl: std_logic_vector(5 DOWNTO 0);
 signal PCSrc: std_logic_vector(1 DOWNTO 0);
 signal Branch: std_logic;
@@ -336,7 +353,7 @@ begin
 	PCx:	buffer_e PORT MAP(ref_clk=>ref_clk, WE=>PCEnable, DataI=>PCIn, 
 						DataO=>PCOut);	
 	
-	IorDmuxx:	mux PORT MAP(in0=>PCOut, in1=>ALUOut, sel=>IorD, outb=>Adr);
+	IorDmuxx:	mux PORT MAP(in0=>PCOut, in1=>shiftextend_out, sel=>IorD, outb=>Adr);
 	
 	Memoryx: 	memory PORT MAP(ref_clk=>ref_clk, WE=>MemWrite, IorD=>IorD, 
 						addr=>Adr, WD=>WriteData, RD=>RD_out);
@@ -348,7 +365,7 @@ begin
 
 	RegDstmuxx:	mux_5bit PORT MAP(in0=>rt, in1=>rd, sel=>RegDst, outb=>waddr);
 
-	MemToRegmuxx: mux PORT MAP(in0=>ALUOut, in1=>Data_out, sel=>MemToReg, 
+	MemToRegmuxx: mux PORT MAP(in0=>shiftextend_out, in1=>Data_out, sel=>MemToReg, 
 						outb=>wdata);
 
 	Regfilex: regfile PORT MAP(ref_clk=>ref_clk, rst_s=>reset, we=>RegWrite,
@@ -380,6 +397,9 @@ begin
 	PCSrcmxx: mux4 PORT MAP(in0=>ALUResult, in1=>ALUOut, in2=>concatenation_out, 
 						in3=>emptyWire, sel=>PCSrc, mux4out=>PCIn);
 
+	Shiftextendx: shiftextend PORT MAP(loadcontrol=>LoadControl, in32=>ALUOut, 
+						out32=>shiftextend_out);
+
 	Andgatex: andgate PORT MAP(IN1=>Branch, IN2=>Zero, OUT1=>andgate_out);
 
 	Orgatex: orgate PORT MAP(IN1=>PCWrite, IN2=>andgate_out, OUT1=>PCEnable);
@@ -390,5 +410,8 @@ begin
 						RegWrite=>RegWrite, MemWrite=>MemWrite, MemToReg=>MemToReg, 
 						RegDst=>RegDst, Branch=>Branch, ALUControl=>ALUControl, 
 						rs=>rs, rt=>rt, rd=>rd, imm=>imm, jumpshiftleft=>jumpshiftleft);
+
+
+
 
 end behavior;

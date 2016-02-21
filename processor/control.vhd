@@ -147,8 +147,27 @@ begin
 						-- LW
 						(instruction(31 DOWNTO 26) = "100011") OR
 
+						-- LB
+						(instruction(31 DOWNTO 26) = "100000") OR
+
+						-- LH
+						(instruction(31 DOWNTO 26) = "100001") OR
+
+						-- LBU 
+						(instruction(31 DOWNTO 26) = "100100") OR
+						
+						-- LHU
+						(instruction(31 DOWNTO 26) = "100101") OR
+
 						-- SW
-						(instruction(31 DOWNTO 26) = "101011")
+						(instruction(31 DOWNTO 26) = "101011") OR
+
+						-- SB
+						(instruction(31 DOWNTO 26) = "101000") OR
+
+						-- SH
+						(instruction(31 DOWNTO 26) = "101001")
+						
 					) then
 
 						state <= s2;
@@ -287,6 +306,8 @@ begin
 				RegWrite <= '0';
 				MemWrite <= '0';
 
+				LoadControl <= "100";
+
 			-- Decode
 			when s1=>
 				ALUSrcA <=	'0';
@@ -295,13 +316,33 @@ begin
 				IRWrite <= '0';
 				PCWrite <= '0';
 
-			-- MemAdr
+			-- MemAdr (LW and SW)
 			when s2=>
 				ALUSrcA <=	'1';
 				ALUSrcB <=	"10";
 				ALUControl <= "100000";
 
-			-- MemRead
+				-- LB
+				if(instruction(31 DOWNTO 26) = "100000") then 
+					LoadControl <= "000";
+
+				-- LH
+				elsif(instruction(31 DOWNTO 26) = "100001") then
+					LoadControl <= "001";
+
+				-- LBU
+				elsif(instruction(31 DOWNTO 26) = "100100") then 
+					LoadControl <= "010";
+
+				-- LHU
+				elsif(instruction(31 DOWNTO 26) = "100101") then 
+					LoadControl <= "011";
+
+				else 	
+					LoadControl <= "100";
+				end if;
+
+			-- MemRead (LW)
 			when s3=>
 				IorD <= '1';
 
