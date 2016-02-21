@@ -308,7 +308,7 @@ signal DataO_B: std_logic_vector(31 DOWNTO 0);
 signal SrcA: std_logic_vector(31 DOWNTO 0);
 signal SrcB: std_logic_vector(31 DOWNTO 0);
 
-signal ALUSrcB_11: std_logic_vector(1 DOWNTO 0);
+signal ALUSrcB_11: std_logic_vector(31 DOWNTO 0);
 
 signal value4: std_logic_vector (31 DOWNTO 0) := "00000000000000000000000000000100";
 
