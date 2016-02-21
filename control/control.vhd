@@ -34,6 +34,27 @@ ENTITY control IS
 		-----------------------------------------------
 		--------------- Control Enables ---------------
 		-----------------------------------------------
+
+		-- new enables
+		-- '0' if instruction, '1' if data
+		IorD : OUT std_logic;
+
+		-- '0' choose PC, '1' choose RD1 
+		ALUSrcA : OUT std_logic;
+
+		-- "00" if RD2, "01" if 4, "10" if imm extend, "11", shifted by 2 of sign extend
+		ALUSrcB : OUT std_logic_vector(1 DOWNTO 0);
+
+		-- "00" if ALU Result (PC), "01" if ALUOut (from buffer), "10" if JUMP
+		PCSrc : OUT std_logic_vector(1 DOWNTO 0);
+
+		-- '1' if write to IR buffer, '0' otherwise 
+		IRWrite : OUT std_logic;
+
+		-- '1' if write to PC, '0' otherwise
+		PCWrite : OUT std_logic;
+
+
 		-- write enable for regfile
 		-- '0' if read, '1' if write
 		RegWrite: OUT std_logic;
@@ -244,29 +265,93 @@ begin
 	process(state)
 	begin
 		case state is
+
+			-- Fetch
 			when s0=>
 
+				-- IorD = '0' --> choose instruction
+				IorD <= '0';
+
+				-- ALUSrcA = '0' --> choose PC
+				ALUSrcA <= '0';
+
+				-- ALUSrcB = "01" --> choose value 4
+				ALUSrcB <= "01";
+
+				-- ALUControl = "100000" --> ADD operation
+				ALUControl <= "100000";
+				PCSrc <= "00";
+				IRWrite <= '1';
+				PCWrite <= '1'';
+
+				RegWrite <= '0';
+				MemWrite <= '0';
+
+			-- Decode
 			when s1=>
+				ALUSrcA <=	'0';
+				ALUSrcB <=	"11";
+				ALUControl <= "100000";
+				IRWrite <= '0';
+				PCWrite <= '0';
 
+			-- MemAdr
 			when s2=>
+				ALUSrcA <=	'1';
+				ALUSrcB <=	"10";
+				ALUControl <= "100000";
 
+			-- MemRead
 			when s3=>
+				IorD <= '1';
 
+			-- Mem Writeback
 			when s4=>
+				RegDst <= '0';
+				MemToReg <= '0';
+				RegWrite <= '1';
 
+			-- MemWrite
 			when s5=>
+				IorD <= '1';
+				MemWrite <= '1';
 
+			-- Execute
 			when s6=>
+				ALUSrcA <= '1';
+				ALUSrcB <= "00";
+				ALUControl **************************
 
+			-- ALU Writeback
 			when s7=>
+				RegDst <= '1';
+				MemToReg <= '0';
+				RegWrite <= '1';
 
+			-- Branch
 			when s8=>
+				ALUSrcA <= '1';
+				ALUSrcB <= "00";
+				ALUControl ************************
+				PCSrc <= "01";
+				Branch <= '1';
 
+			-- ADDI Execute
 			when s9=>
+				ALUSrcA <= '1';
+				ALUSrcB <= "10";
+				ALUControl *************************
 
+			-- ADDI Writeback
 			when s10=>
+				RegDst <= '0';
+				MemToReg <= '0';
+				RegWrite <= '1';
 
+			-- Jump
 			when s11=>
+				PCSrc <= "10";
+				PCWrite <= '1';
 
 
 
