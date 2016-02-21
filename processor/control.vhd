@@ -336,7 +336,7 @@ begin
 				ALUControl <= "100000";
 				PCSrc <= "00";
 				IRWrite <= '1';
-				PCWrite <= '1'';
+				PCWrite <= '1';
 
 				RegWrite <= '0';
 				MemWrite <= '0';
