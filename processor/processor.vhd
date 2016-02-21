@@ -101,6 +101,25 @@ component regfile
 	);
 end component;
 
+-- sign_extension_16bit
+component sign_extension_16bit
+	PORT(
+		immediate : IN std_logic_vector(15 DOWNTO 0);
+		sign_extension_out : OUT std_logic_vector(31 DOWNTO 0)
+	);
+end component;
+
+-- buffer_2_woe
+component buffer_2_woe
+	PORT (
+		ref_clk : IN std_logic;
+		DataI_A : IN std_logic_vector(31 DOWNTO 0);
+		DataI_B : IN std_logic_vector(31 DOWNTO 0);
+		DataO_A : OUT std_logic_vector(31 DOWNTO 0);
+		DataO_B: OUT std_logic_vector(31 DOWNTO 0)
+	);
+end component;
+
 
 
 
@@ -128,6 +147,11 @@ signal wdata: std_logic_vector(31 DOWNTO 0);
 signal RD1_out: std_logic_vector(31 DOWNTO 0);
 signal RD2_out: std_logic_vector(31 DOWNTO 0);
 
+signal ImmExt: std_logic_vector(31 DOWNTO 0);
+
+signal DataO_A: std_logic_vector(31 DOWNTO 0);
+signal DataO_B: std_logic_vector(31 DOWNTO 0);
+
 signal IorD: std_logic;
 signal MemWrite: std_logic;
 signal IRWrite: std_logic;
@@ -137,6 +161,7 @@ signal RegWrite: std_logic;
 signal rs: std_logic_vector(4 DOWNTO 0);
 signal rt: std_logic_vector(4 DOWNTO 0);
 signal rd: std_logic_vector(4 DOWNTO 0);
+signal imm: std_logic_vector(15 DOWNTO 0);
 
 
 ------------------- begin --------------------- 
@@ -164,8 +189,10 @@ begin
 						raddr_1=>rs, raddr_2=>rt, waddr=>waddr, rdata_1=>RD1_out,
 						rdata_2=>RD2_out, wdata=>wdata);
 
+	SignExtendx:	sign_extension_16bit PORT MAP(immediate=>imm, sign_extension_out=>ImmExt);
 
-
+	Regbufferx:	buffer_2_woe PORT MAP(ref_clk=>ref_clk, DataI_A=>RD1_out,
+						DataI_B=>RD2_out, DataO_A=>DataO_A, DataO_B=>DataO_B);
 
 
 
