@@ -175,7 +175,14 @@ begin
 					elsif( 
 
 						-- R-type
-						(instruction(31 DOWNTO 26) = "000000")
+						((instruction(31 DOWNTO 26) = "000000") AND
+
+							-- Not equal to JR
+							((instruction(5 DOWNTO 0) != "001000") OR
+
+							-- Not equal to JALR
+							(instruction(5 DOWNTO 0) != "001001")))
+
 					) then
 
 						state <= s6;
@@ -202,7 +209,26 @@ begin
 
 					elsif(
 
-						--Addi
+						-- Addi
+						(instruction(31 DOWNTO 26) = "001000") OR
+
+						-- Addiu
+						(instruction(31 DOWNTO 26) = "001001") OR
+
+						-- ANDI
+						(instruction(31 DOWNTO 26) = "001100") OR
+
+						-- ORI						
+						(instruction(31 DOWNTO 26) = "001101") OR
+
+						-- XORI
+						(instruction(31 DOWNTO 26) = "001110") OR
+
+						-- SLTI
+						(instruction(31 DOWNTO 26) = "001010") OR
+
+						-- SLTIU
+						(instruction(31 DOWNTO 26) = "001011") 
 
 					) then 
 
@@ -230,7 +256,20 @@ begin
 					if(
 
 						-- LW
-						(instruction(31 DOWNTO 26) = "100011") 
+						(instruction(31 DOWNTO 26) = "100011") OR
+
+						-- LB
+						(instruction(31 DOWNTO 26) = "100000") OR
+
+						-- LH
+						(instruction(31 DOWNTO 26) = "100001") OR
+
+						-- LBU 
+						(instruction(31 DOWNTO 26) = "100100") OR
+						
+						-- LHU
+						(instruction(31 DOWNTO 26) = "100101") 
+
 					) then
 
 						state <= s3;
@@ -238,7 +277,14 @@ begin
 					elsif(
 
 						-- SW
-						(instruction(31 DOWNTO 26) = "101011")
+						(instruction(31 DOWNTO 26) = "101011") OR
+
+						-- SB
+						(instruction(31 DOWNTO 26) = "101000") OR
+
+						-- SH
+						(instruction(31 DOWNTO 26) = "101001")
+
 					) then
 
 						state <= s5;
@@ -308,6 +354,8 @@ begin
 
 				LoadControl <= "100";
 
+				Branch <= '1';
+
 			-- Decode
 			when s1=>
 				ALUSrcA <=	'0';
@@ -361,7 +409,8 @@ begin
 			when s6=>
 				ALUSrcA <= '1';
 				ALUSrcB <= "00";
-				ALUControl **************************
+
+				ALUControl <= instruction(5 DOWNTO 0);
 
 			-- ALU Writeback
 			when s7=>
@@ -373,7 +422,9 @@ begin
 			when s8=>
 				ALUSrcA <= '1';
 				ALUSrcB <= "00";
-				ALUControl ************************
+
+				ALUControl <= instruction(5 DOWNTO 0);
+				
 				PCSrc <= "01";
 				Branch <= '1';
 
@@ -381,7 +432,7 @@ begin
 			when s9=>
 				ALUSrcA <= '1';
 				ALUSrcB <= "10";
-				ALUControl *************************
+				ALUControl <= instruction(5 DOWNTO 0);
 
 			-- ADDI Writeback
 			when s10=>
@@ -393,8 +444,6 @@ begin
 			when s11=>
 				PCSrc <= "10";
 				PCWrite <= '1';
-
-
 
 		end case;
 	end process;
