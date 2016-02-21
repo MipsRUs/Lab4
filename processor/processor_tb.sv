@@ -35,7 +35,7 @@ initial begin
     ref_clk = 1;
 	reset = 1;
 	#2 reset = 0;
-	#36;
+	#100;
 	$finish;
 
 end
