@@ -59,10 +59,6 @@ ENTITY control IS
 		-- '0' if read, '1' if write
 		RegWrite: OUT std_logic;
 
-		-- selecting sign extend OR raddr_2
-		-- '0' if raddr_2 result, '1' if sign extend result
-		ALUSrc: OUT std_logic;
-
 		-- write ebable for data memory
 		-- '0' if not writing to mem, '1' if writing to mem
 		MemWrite: OUT std_logic;
@@ -78,30 +74,12 @@ ENTITY control IS
 		-- '1' if branching, '0' if not branching
 		Branch: OUT std_logic;
 
-		-- '1' if jump instruction, else '0' 
-		Jump: OUT std_logic;
-
-		-- '1' if JR instruction, else '0'
-		JRControl: OUT std_logic;
-
-		-- '1' if JAL instruction and saves current address to register '31' else '0' 
-		JALAddr: OUT std_logic;
-
-		-- "00" (LB/LH, and whatever comes out from memReg)
-		-- "01" for LUI instruction,
-		-- "10" for JAL, saves data of current instruction (or the next one)		 
-		JALData: OUT std_logic_vector(1 DOWNTO 0);
-
-		-- '1' if shift, else '0' (SLL, SRL, SRA ONLY)
-		ShiftControl: OUT std_logic;
-
 		-- "000" if LB; "001" if LH; "010" if LBU; "011" if LHU; 
 		-- "100" if normal, (don't do any manipulation to input) 
 		LoadControl: OUT std_logic_vector(2 DOWNTO 0);
 
 		-- func for ALU
 		ALUControl: OUT std_logic_vector(5 DOWNTO 0);
-
 
 		-- to regfile
 		-- operand A
@@ -116,9 +94,6 @@ ENTITY control IS
 		-- immediant, (rd+shamt+func)
 		imm: OUT std_logic_vector(15 DOWNTO 0);
 
-		-- shamt
-		shamt: OUT std_logic_vector(4 DOWNTO 0);
-
 		-- jump shift left
 		jumpshiftleft: OUT std_logic_vector(25 DOWNTO 0)
 	);
@@ -132,6 +107,20 @@ architecture behavior of control is
 
 begin
 
+	-- Operand A
+	rs <= instruction(25 DOWNTO 21);
+
+	-- Operand B
+	rt <= instruction(20 DOWNTO 16);
+
+	-- write destination
+	rd <= instruction(15 DOWNTO 11);
+
+	-- immediant, (rd+shamt+func)
+	imm <= instruction(15 DOWNTO 0);
+
+	jumpshiftleft <= instruction(25 DOWNTO 0);
+	
 	process(ref_clk, reset)
 	begin
 		if reset = '1' then 

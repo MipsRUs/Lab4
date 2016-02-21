@@ -201,6 +201,7 @@ end component;
 -- ************ missing some functionalities
 component control
 	PORT (
+		
 		ref_clk : IN std_logic;
 		reset : IN std_logic;
 
@@ -235,7 +236,6 @@ component control
 		-- '0' if read, '1' if write
 		RegWrite: OUT std_logic;
 
-
 		-- write ebable for data memory
 		-- '0' if not writing to mem, '1' if writing to mem
 		MemWrite: OUT std_logic;
@@ -257,7 +257,6 @@ component control
 
 		-- func for ALU
 		ALUControl: OUT std_logic_vector(5 DOWNTO 0);
-
 
 		-- to regfile
 		-- operand A
@@ -408,8 +407,9 @@ begin
 						IorD=>IorD, ALUSrcA=>ALUSrcA, ALUSrcB=>ALUSrcB, 
 						PCSrc=>PCSrc, IRWrite=>IRWrite, PCWrite=>PCWrite, 
 						RegWrite=>RegWrite, MemWrite=>MemWrite, MemToReg=>MemToReg, 
-						RegDst=>RegDst, Branch=>Branch, ALUControl=>ALUControl, 
-						rs=>rs, rt=>rt, rd=>rd, imm=>imm, jumpshiftleft=>jumpshiftleft);
+						RegDst=>RegDst, Branch=>Branch, LoadControl=>LoadControl, 
+						ALUControl=>ALUControl, rs=>rs, rt=>rt, rd=>rd, 
+						imm=>imm, jumpshiftleft=>jumpshiftleft);
 
 
 
