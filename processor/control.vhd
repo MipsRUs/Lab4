@@ -101,7 +101,7 @@ END control;
 
 architecture behavior of control is
 
-	type state_type is (s0, s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11)
+	type state_type is (s0, s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11);
 
 	signal state : state_type;
 
