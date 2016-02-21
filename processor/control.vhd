@@ -167,10 +167,10 @@ begin
 						((instruction(31 DOWNTO 26) = "000000") AND
 
 							-- Not equal to JR
-							((instruction(5 DOWNTO 0) != "001000") OR
+							((instruction(5 DOWNTO 0) /= "001000") OR
 
 							-- Not equal to JALR
-							(instruction(5 DOWNTO 0) != "001001")))
+							(instruction(5 DOWNTO 0) /= "001001")))
 
 					) then
 
