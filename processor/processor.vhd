@@ -45,17 +45,36 @@ component buffer_e
 	);
 end component;
 
--- ALU
-component alu
-	PORT (
-		Func_in : IN std_logic_vector (5 DOWNTO 0);
-		A_in : IN std_logic_vector (31 DOWNTO 0);
-		B_in : IN std_logic_vector (31 DOWNTO 0);
-		O_out : OUT std_logic_vector (31 DOWNTO 0);
-		Branch_out : OUT std_logic
+-- buffer_woe
+component buffer_woe
+	port (
+		ref_clk : IN std_logic;
+		DataI: IN std_logic_vector(31 DOWNTO 0);
+		DataO: OUT std_logic_vector(31 DOWNTO 0)
 	);
 end component;
 
+-- mux
+component mux
+	port( 
+		in0: in std_logic_vector(31 downto 0);
+		in1: in std_logic_vector(31 downto 0);
+		sel: in std_logic;
+		outb: out std_logic_vector(31 downto 0)
+	);
+end component;
+
+-- memory
+component memory
+	port (
+		ref_clk : IN std_logic;
+		WE : IN std_logic;
+		IorD : IN std_logic; 
+		addr : IN std_logic_vector(31 DOWNTO 0); 
+		WD : IN std_logic_vector(31 DOWNTO 0); 
+		RD : OUT std_logic_vector(31 DOWNTO 0)
+	);
+end component;
 
 
 
@@ -68,6 +87,20 @@ signal PCEnable : std_logic;
 signal PCIn : std_logic_vector(31 DOWNTO 0);
 signal PCOut : std_logic_vector(31 DOWNTO 0);
 
+signal ALUOut: std_logic_vector(31 DOWNTO 0);
+
+signal Adr: std_logic_vector(31 DOWNTO 0);
+
+signal WriteData: std_logic_vector(31 DOWNTO 0);
+signal RD_out: std_logic_vector(31 DOWNTO 0);
+
+signal Instr_out: std_logic_vector(31 DOWNTO 0);
+signal Data_out: std_logic_vector(31 DOWNTO 0);
+
+signal IorD: std_logic;
+signal MemWrite: std_logic;
+signal IRWrite: std_logic;
+
 
 
 ------------------- begin --------------------- 
@@ -76,7 +109,15 @@ begin
 	pcx:	buffer_e PORT MAP(ref_clk=>ref_clk, WE=>PCEnable, DataI=>PCIn, 
 						DataO=>PCOut);	
 	
+	IorDmuxx:	mux PORT MAP(in0=>PCOut, in1=>ALUOut, sel=>IorD, outb=>Adr);
 	
+	memoryx: 	memory PORT MAP(ref_clk=>ref_clk, WE=>MemWrite, IorD=>IorD, 
+						addr=>Adr, WD=>WriteData, RD=>RD_out);
+
+	Ibufferx:	buffer_e PORT MAP(ref_clk=>ref_clk, WE=>IRWrite, DataI=>RD_out,
+						DataO=>Instr_out);
+
+	Dbufferx:	buffer_woe PORT MAP(ref_clk=>ref_clk, DataI=>RD_out, DataO=>Data_out);
 
 	
 end behavior;
