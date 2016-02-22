@@ -303,10 +303,13 @@ begin
 					state <= s0;
 
 				when s9=>
+					
 					state <= s10;
-
+				
 				when s10=>
+					
 					state <= s0;
+					
 
 				when s11=>
 					state <= s0;
@@ -343,7 +346,7 @@ begin
 
 				LoadControl <= "100";
 
-				Branch <= '1';
+				Branch <= '0';
 
 			-- Decode
 			when s1=>
@@ -419,13 +422,14 @@ begin
 
 			-- ADDI Execute
 			when s9=>
+				PCSrc <= "00";
 				ALUSrcA <= '1';
 				ALUSrcB <= "10";
 				ALUControl <= instruction(5 DOWNTO 0);
 
 			-- ADDI Writeback
 			when s10=>
-				RegDst <= '0';
+				RegDst <= '1';
 				MemToReg <= '0';
 				RegWrite <= '1';
 

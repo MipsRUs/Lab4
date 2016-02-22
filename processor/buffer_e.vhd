@@ -28,7 +28,7 @@ ENTITY buffer_e IS
 		WE : IN std_logic;
 		DataI: IN std_logic_vector(31 DOWNTO 0);
 		DataO: OUT std_logic_vector(31 DOWNTO 0)
-	
+		
 	);
 END buffer_e;
 
@@ -36,18 +36,19 @@ architecture behavior of buffer_e is
 
 begin
 	process(ref_clk, WE, DataI)
-	variable temp : std_logic_vector(31 DOWNTO 0);
-	begin
+	--variable temp : std_logic_vector(31 DOWNTO 0);
+	variable temp : std_logic_vector(31 DOWNTO 0):= (others=>'0');
 
+	begin
+		
 		-- SC 2016-02-20: Changed ref_clk='1' to ref_clk='0'
  		if(ref_clk'event AND ref_clk='0') then 
 			if(WE='1') then
 				temp := std_logic_vector(unsigned(DataI));
 			end if;
-
-
-		end if;
+		end if;	
 		DataO <= temp;
+		
 	end process;
 end;
 
