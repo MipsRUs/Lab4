@@ -56,7 +56,7 @@ begin
 		if(rst_s='1') then
 
 			-- going through every regfile
-			reg_loop: for i in 0 to 2**4 loop
+			reg_loop: for i in 0 to 2**5-1 loop
 				mem_var(i) := (others=>'0');
 			end loop; 
 
